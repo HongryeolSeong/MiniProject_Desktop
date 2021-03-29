@@ -26,7 +26,7 @@ namespace WpfSMSApp.View.Account
             InitializeComponent();
         }
 
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
