@@ -34,7 +34,10 @@ namespace WpfSMSApp.View
                                                         MessageDialogStyle.AffirmativeAndNegative, null); // mahapp 샘플 메서드
 
             if (result == MessageDialogResult.Affirmative)
+            {
+                Commons.LOGGER.Info("프로그램 종료");
                 Application.Current.Shutdown();
+            }
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
