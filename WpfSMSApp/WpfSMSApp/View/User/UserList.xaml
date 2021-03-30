@@ -1,0 +1,84 @@
+﻿<Page 
+    x:Class="WpfSMSApp.View.User.UserList"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:WpfSMSApp.View.User"
+    mc:Ignorable="d" 
+    d:DesignHeight="630" d:DesignWidth="1200"
+    Title="UserList" Loaded="Page_Loaded">
+    <Page.Resources>
+        <Style TargetType="Label"><!-- {x:Name Label} -->
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Margin" Value="10, 0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="70" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="210" />
+        </Grid.ColumnDefinitions>
+
+        <!-- 제목입력 시작 -->
+        <Label Grid.Row="0" Grid.Column="1" 
+               Content="계정리스트" FontSize="25" FontWeight="ExtraBold"
+               VerticalContentAlignment="Center" HorizontalAlignment="Left" />
+        <!-- 제목입력 끝 -->
+        
+        <!-- 버튼영역 시작 -->
+        <StackPanel Grid.Row="0" Grid.Column="2" Grid.RowSpan="2">
+            <Button x:Name="BtnAddUser" Content="사용자추가" FontSize="14"
+                    Height="50" Margin="5, 30, 5, 5"
+                    Background="DarkBlue" Foreground="White" Click="BtnAddUser_Click" >
+            </Button>
+            <Button x:Name="BtnEditUser" Content="사용자수정" FontSize="14"
+                    Height="50" Margin="5, 5"
+                    Background="DarkBlue" Foreground="White" Click="BtnEditUser_Click" >
+            </Button>
+            <Button x:Name="BtnDeactivatedUser" Content="사용자비활성화" FontSize="14"
+                    Height="50" Margin="5, 5"
+                    Background="DarkBlue" Foreground="White" Click="BtnDeactivatedUser_Click" >
+            </Button>
+            <Button x:Name="BtnExportPdf" Content="PDF익스포트" FontSize="14"
+                    Height="50" Margin="5, 5"
+                    Background="Silver" Foreground="Black" Click="BtnExportPdf_Click" >
+            </Button>
+        </StackPanel>
+        <!-- 버튼영역 끝 -->
+        
+        <!-- 컨텐츠영역 시작 -->
+        <Grid Grid.Row="1" Grid.Column="1" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+                <RadioButton Content="모두" Margin="5" ></RadioButton>
+                <RadioButton Content="활성" Margin="5" ></RadioButton>
+                <RadioButton Content="비활성" Margin="5" ></RadioButton>
+            </StackPanel>
+            
+            <DataGrid x:Name="GrdData" Grid.Row="1">
+                
+            </DataGrid>
+        </Grid>
+        <!-- 컨텐츠영역 끝 -->
+    </Grid>
+</Page>
