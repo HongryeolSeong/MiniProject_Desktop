@@ -1,18 +1,13 @@
-﻿using System;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
+using WpfSMSApp.Model;
 
 namespace WpfSMSApp.View.User
 {
@@ -30,40 +25,154 @@ namespace WpfSMSApp.View.User
         {
             try
             {
-                var user = Commons.LOGINED_USER;
-                /*TxtUserID.Text = user.UserID.ToString();
-                TxtUserIdentityNumber.Text = user.UserIdentityNumber;
-                TxtUserSurName.Text = user.UserSurname;
-                TxtUserName.Text = user.UserName;
-                TxtUserEmail.Text = user.UserEmail;
-                TxtUserAdmin.Text = user.UserAdmin.ToString();
-                TxtUserActivated.Text = user.UserActivated.ToString();*/
+                RboAll.IsChecked = true;
             }
             catch (Exception ex)
             {
-                Commons.LOGGER.Error($"예외발생 MyAccount Loaded : {ex}");
+                Commons.LOGGER.Error($"예외발생 UserList Loaded : {ex}");
                 throw ex;
             }
         }
 
         private void BtnAddUser_Click(object sender, RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new AddUser());
+            try
+            {
+                NavigationService.Navigate(new AddUser());
+            }
+            catch (Exception ex)
+            {
+                Commons.LOGGER.Error($"예외발생 BtnAddUser_Loaded : {ex}");
+                throw ex;
+            }
         }
 
         private void BtnEditUser_Click(object sender, RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new EditUser());
+            try
+            {
+                NavigationService.Navigate(new EditUser());
+            }
+            catch (Exception ex)
+            {
+                Commons.LOGGER.Error($"예외발생 BtnEditUser_Loaded : {ex}");
+                throw ex;
+            }
         }
 
         private void BtnDeactivatedUser_Click(object sender, RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new DeactiveUser());
+            try
+            {
+                NavigationService.Navigate(new DeactiveUser());
+            }
+            catch (Exception ex)
+            {
+                Commons.LOGGER.Error($"예외발생 BtnDeactivatedUser_Click : {ex}");
+                throw ex;
+            }
         }
 
         private void BtnExportPdf_Click(object sender, RoutedEventArgs e)
         {
+            SaveFileDialog saveDialog = new SaveFileDialog();
+            saveDialog.Filter = "PDF File (*.pdf)|*.pdf";
+            saveDialog.FileName = "";
+            if (saveDialog.ShowDialog() == true)
+            {
+                // PDF 변환
+                try
+                {
+                    iTextSharp.text.Font font = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12);
+                    string pdfFilePath = saveDialog.FileName;
 
+                    iTextSharp.text.Document pdfDoc = new Document(PageSize.A4);
+
+                    // 1. PDF 객체 생성
+                    PdfPTable pdfTable = new PdfPTable(GrdData.Columns.Count);
+
+                    // 2. PDF 내용 생성
+                    // 한글 호환을 위한
+                    string nanumttf = Path.Combine(Environment.GetEnvironmentVariable("SystemRoot"), @"Fonts\NanumGothic.ttf");
+                    BaseFont nanumBase = BaseFont.CreateFont(nanumttf, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                    var nanumFont = new iTextSharp.text.Font(nanumBase, 16f);
+
+                    Paragraph title = new Paragraph($@"부경대 PKNU Stock Management System : {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}", nanumFont);
+
+
+                    // 3. PDF 파일 생성
+                    using (FileStream stream = new FileStream(pdfFilePath, FileMode.OpenOrCreate))
+                    {
+                        PdfWriter.GetInstance(pdfDoc, stream);
+                        pdfDoc.Open();
+                        // 2번에서 생성할 내용 추가
+
+                        pdfDoc.Close();
+                        stream.Close(); // 필수 아님
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Commons.LOGGER.Error($"예외발생 BtnExportPdf_Click : {ex}");
+                }
+            }
+        }
+
+        private void RboAll_Checked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                List<WpfSMSApp.Model.User> users = new List<Model.User>(); // 폴더 User와 충돌하기 때문에 이렇게 코딩
+
+                if (RboAll.IsChecked == true)
+                {
+                    users = Logic.DataAccess.GetUsers();
+                }
+                this.DataContext = users; // 페이지 전체에 users 값 삽입
+            }
+            catch (Exception ex)
+            {
+                Commons.LOGGER.Error($"예외발생 : {ex}");
+            }
+        }
+
+        private void RboActive_Checked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                List<WpfSMSApp.Model.User> users = new List<Model.User>(); // 폴더 User와 충돌하기 때문에 이렇게 코딩
+
+                if (RboActive.IsChecked == true)
+                {
+                    users = Logic.DataAccess.GetUsers().Where(u => u.UserActivated == true).ToList();
+                }
+                this.DataContext = users; // 페이지 전체에 users 값 삽입
+            }
+            catch (Exception ex)
+            {
+                Commons.LOGGER.Error($"예외발생 : {ex}");
+            }
+        }
+
+        private void RboDeactive_Checked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                List<WpfSMSApp.Model.User> users = new List<Model.User>(); // 폴더 User와 충돌하기 때문에 이렇게 코딩
+
+                if (RboDeactive.IsChecked == true)
+                {
+                    users = Logic.DataAccess.GetUsers().Where(u => u.UserActivated == false).ToList();
+                }
+                this.DataContext = users; // 페이지 전체에 users 값 삽입
+            }
+            catch (Exception ex)
+            {
+                Commons.LOGGER.Error($"예외발생 : {ex}");
+            }
         }
     }
 }
