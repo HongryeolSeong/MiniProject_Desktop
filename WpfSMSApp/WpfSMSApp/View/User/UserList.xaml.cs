@@ -3,11 +3,11 @@ using iTextSharp.text.pdf;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using WpfSMSApp.Model;
 
 namespace WpfSMSApp.View.User
 {
@@ -91,27 +91,22 @@ namespace WpfSMSApp.View.User
 
                     iTextSharp.text.Document pdfDoc = new Document(PageSize.A4);
 
-                    // 1. PDF 객체 생성
+                    // 1.PDF 객체생성
                     PdfPTable pdfTable = new PdfPTable(GrdData.Columns.Count);
 
-                    // 2. PDF 내용 생성
-                    // 한글 호환을 위한
-                    string nanumttf = Path.Combine(Environment.GetEnvironmentVariable("SystemRoot"), @"Fonts\NanumGothic.ttf");
-                    BaseFont nanumBase = BaseFont.CreateFont(nanumttf, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-                    var nanumFont = new iTextSharp.text.Font(nanumBase, 16f);
+                    // 2.PDF 내용 만들기
 
-                    Paragraph title = new Paragraph($@"부경대 PKNU Stock Management System : {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}", nanumFont);
+                    Paragraph title = new Paragraph($@"부경대 Stock Management System : {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}");
 
-
-                    // 3. PDF 파일 생성
+                    // 3.PDF 파일생성
                     using (FileStream stream = new FileStream(pdfFilePath, FileMode.OpenOrCreate))
                     {
                         PdfWriter.GetInstance(pdfDoc, stream);
                         pdfDoc.Open();
-                        // 2번에서 생성할 내용 추가
-
+                        // 2번에서 만들 내용 추가
+                        pdfDoc.Add(title);
                         pdfDoc.Close();
-                        stream.Close(); // 필수 아님
+                        stream.Close(); // option
                     }
                 }
                 catch (Exception ex)
@@ -120,7 +115,6 @@ namespace WpfSMSApp.View.User
                 }
             }
         }
-
         private void RboAll_Checked(object sender, RoutedEventArgs e)
         {
             try
