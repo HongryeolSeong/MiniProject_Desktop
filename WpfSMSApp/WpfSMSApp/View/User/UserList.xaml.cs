@@ -86,17 +86,69 @@ namespace WpfSMSApp.View.User
                 // PDF 변환
                 try
                 {
-                    iTextSharp.text.Font font = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12);
+                    // 0. PDF 사용 폰트 설정
+                    string nanumPath = Path.Combine(Environment.CurrentDirectory, @"NanumGothic.ttf"); // 폰트 경로
+                    BaseFont nanumBase = BaseFont.CreateFont(nanumPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                    var nanumTitle = new iTextSharp.text.Font(nanumBase, 20f); // 사이즈 20인 타티을용 나눔 폰트 생성
+                    var nanumContent = new iTextSharp.text.Font(nanumBase, 10f); // 사이즈 20인 타티을용 나눔 폰트 생성
+                    // iTextSharp.text.Font font = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12); 영어 폰트
                     string pdfFilePath = saveDialog.FileName;
 
+                    // 1.PDF 객체생성
                     iTextSharp.text.Document pdfDoc = new Document(PageSize.A4);
 
-                    // 1.PDF 객체생성
-                    PdfPTable pdfTable = new PdfPTable(GrdData.Columns.Count);
-
                     // 2.PDF 내용 만들기
+                    Paragraph title = new Paragraph("부경대 재고관리시스템(SMS)\n", nanumTitle);
+                    Paragraph subTitle = new Paragraph($"사용자리스트 exported : {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}\n\n", nanumContent);
 
-                    Paragraph title = new Paragraph($@"부경대 Stock Management System : {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}");
+                    PdfPTable pdfTable = new PdfPTable(GrdData.Columns.Count);
+                    pdfTable.WidthPercentage = 100; // 전체 사이즈 사용
+
+                    // 2-1. 그리드 헤더 작업
+                    var index = 0;
+                    foreach (DataGridColumn column in GrdData.Columns)
+                    {
+                        PdfPCell cell = new PdfPCell(new Phrase(column.Header.ToString(), nanumContent));
+                        cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                        cell.VerticalAlignment = Element.ALIGN_CENTER;
+                        pdfTable.AddCell(cell);
+                        index++;
+                    }
+
+                    float[] columnsWidth = new float[] { 5f, 13f, 8f, 13f, 30f, 10f, 10f };
+                    pdfTable.SetWidths(columnsWidth);
+
+                    // 2-2. 그리드 로우 작업
+                    foreach (var item in GrdData.Items)
+                    {
+                        // 마지막 빈 로우 제거
+                        if (item is Model.User)
+                        {
+                            var temp = item as Model.User;
+                            PdfPCell cell = new PdfPCell(new Phrase(temp.UserID.ToString(), nanumContent));
+                            cell.HorizontalAlignment = Element.ALIGN_RIGHT;
+                            pdfTable.AddCell(cell);
+                            cell = new PdfPCell(new Phrase(temp.UserIdentityNumber.ToString(), nanumContent));
+                            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                            pdfTable.AddCell(cell);
+                            cell = new PdfPCell(new Phrase(temp.UserSurname.ToString(), nanumContent));
+                            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                            pdfTable.AddCell(cell);
+                            cell = new PdfPCell(new Phrase(temp.UserName.ToString(), nanumContent));
+                            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                            pdfTable.AddCell(cell);
+                            cell = new PdfPCell(new Phrase(temp.UserEmail.ToString(), nanumContent));
+                            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                            pdfTable.AddCell(cell);
+                            cell = new PdfPCell(new Phrase(temp.UserAdmin.ToString(), nanumContent));
+                            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                            pdfTable.AddCell(cell);
+                            cell = new PdfPCell(new Phrase(temp.UserActivated.ToString(), nanumContent));
+                            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                            pdfTable.AddCell(cell);
+                        }
+                    }
+
 
                     // 3.PDF 파일생성
                     using (FileStream stream = new FileStream(pdfFilePath, FileMode.OpenOrCreate))
@@ -105,9 +157,13 @@ namespace WpfSMSApp.View.User
                         pdfDoc.Open();
                         // 2번에서 만들 내용 추가
                         pdfDoc.Add(title);
+                        pdfDoc.Add(subTitle);
+                        pdfDoc.Add(pdfTable);
                         pdfDoc.Close();
                         stream.Close(); // option
                     }
+
+                    Commons.ShowMessageAsync("PDF변환", "PDF 익스포트를 성공했습니다.");
                 }
                 catch (Exception ex)
                 {
@@ -166,6 +222,20 @@ namespace WpfSMSApp.View.User
             catch (Exception ex)
             {
                 Commons.LOGGER.Error($"예외발생 : {ex}");
+            }
+        }
+
+        private void BtnActivatedUser_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new ActiveUser());
+            try
+            {
+                NavigationService.Navigate(new ActiveUser());
+            }
+            catch (Exception ex)
+            {
+                Commons.LOGGER.Error($"예외발생 BtnDeactivatedUser_Click : {ex}");
+                throw ex;
             }
         }
     }

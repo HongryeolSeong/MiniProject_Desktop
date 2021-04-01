@@ -62,6 +62,18 @@
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding}" Margin="20, 0" VerticalAlignment="Center" />
+                            <IconPacks:PackIconMaterial Kind="AccountCog" Width="20" Height="20" />
+                        </StackPanel>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
+            <Button x:Name="BtnActivatedUser" Content="사용자활성화" FontSize="14"
+                    Height="50" Margin="5, 5"
+                    Background="DarkBlue" Foreground="White" Click="BtnActivatedUser_Click" >
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding}" Margin="20, 0" VerticalAlignment="Center" />
                             <IconPacks:PackIconMaterial Kind="AccountCheck" Width="20" Height="20" />
                         </StackPanel>
                     </DataTemplate>
