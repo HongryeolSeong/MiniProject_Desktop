@@ -8,7 +8,9 @@
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:NaverMovieFinderApp"
     mc:Ignorable="d"
-    Title="Naver MovieFinder" Height="550" Width="1020">
+    Title="Naver MovieFinder" Height="550" Width="1020"
+    Loaded="MetroWindow_Loaded"
+    Closing="MetroWindow_Closing">
     <mah:MetroWindow.IconTemplate>
         <DataTemplate>
             <iconPacks:PackIconForkAwesome Kind="Film" Margin="5, 7, 0, 0" Foreground="white" />
@@ -54,7 +56,7 @@
         <DataGrid x:Name="GrdData" 
                   Grid.Row="2" Grid.Column="1"
                   AutoGenerateColumns="False" Margin="10" SelectionUnit="FullRow"
-                  GridLinesVisibility="Vertical"
+                  GridLinesVisibility="Vertical" IsReadOnly="True"
                   Style="{StaticResource MahApps.Styles.DataGrid.Azure}"
                   ItemsSource="{Binding}" SelectedCellsChanged="GrdData_SelectedCellsChanged">
             <DataGrid.Columns>
@@ -63,7 +65,7 @@
                 <DataGridTextColumn Binding="{Binding PubDate}" Header="상영년도" IsReadOnly="True" />
                 <DataGridTextColumn Binding="{Binding Director}" Header="감독" IsReadOnly="True" />
                 <DataGridTextColumn Binding="{Binding Actor}" Header="배우" IsReadOnly="True" />
-                <DataGridTextColumn Binding="{Binding UserRating}" Header="평점" IsReadOnly="True" />
+                <DataGridTextColumn Binding="{Binding UserRaing}" Header="네티즌 평점" IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>
 
@@ -121,7 +123,7 @@
             </Button>
             <Button x:Name="BtnNaverMovieLink" Content="네이버 영화" 
                     Margin="5, 10" Width="130" FontSize="12"
-                    Background="MediumSeaGreen" Foreground="White" Click="BtnWatchTrailer_Click" >
+                    Background="MediumSeaGreen" Foreground="White" Click="BtnNaverMovieLink_Click" >
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
