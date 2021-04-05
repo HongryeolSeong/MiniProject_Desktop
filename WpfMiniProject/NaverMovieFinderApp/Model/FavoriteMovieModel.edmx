@@ -17,7 +17,7 @@
           <Property Name="PubDate" Type="varchar" MaxLength="20" />
           <Property Name="Director" Type="nvarchar" MaxLength="1000" />
           <Property Name="Actor" Type="nvarchar" MaxLength="1000" />
-          <Property Name="UserRaing" Type="varchar" MaxLength="10" />
+          <Property Name="UserRating" Type="varchar" MaxLength="10" />
           <Property Name="RegDate" Type="datetime" />
         </EntityType>
         <EntityContainer Name="OpenApiLabModelStoreContainer">
@@ -40,7 +40,7 @@
           <Property Name="PubDate" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Director" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Actor" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="UserRaing" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="UserRating" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="RegDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityContainer Name="OpenApiLabEntities" annotation:LazyLoadingEnabled="true">
@@ -63,7 +63,7 @@
                 <ScalarProperty Name="PubDate" ColumnName="PubDate" />
                 <ScalarProperty Name="Director" ColumnName="Director" />
                 <ScalarProperty Name="Actor" ColumnName="Actor" />
-                <ScalarProperty Name="UserRaing" ColumnName="UserRaing" />
+                <ScalarProperty Name="UserRating" ColumnName="UserRating" />
                 <ScalarProperty Name="RegDate" ColumnName="RegDate" />
               </MappingFragment>
             </EntityTypeMapping>

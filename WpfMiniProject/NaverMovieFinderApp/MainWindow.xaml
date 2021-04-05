@@ -65,7 +65,7 @@
                 <DataGridTextColumn Binding="{Binding PubDate}" Header="상영년도" IsReadOnly="True" />
                 <DataGridTextColumn Binding="{Binding Director}" Header="감독" IsReadOnly="True" />
                 <DataGridTextColumn Binding="{Binding Actor}" Header="배우" IsReadOnly="True" />
-                <DataGridTextColumn Binding="{Binding UserRaing}" Header="네티즌 평점" IsReadOnly="True" />
+                <DataGridTextColumn Binding="{Binding UserRating}" Header="네티즌 평점" IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>
 

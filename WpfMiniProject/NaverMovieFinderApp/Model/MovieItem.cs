@@ -15,10 +15,10 @@ namespace NaverMovieFinderApp.Model
         public string PubDate { get; set; }
         public string Director { get; set; }
         public string Actor { get; set; }
-        public string UserRaing { get; set; }
+        public string UserRating { get; set; }
 
         public MovieItem(string title, string link, string image, string subTitle,
-                         string pubDate, string director, string actor, string userRaing)
+                         string pubDate, string director, string actor, string userRating)
         {
             Title = title;
             Link = link;
@@ -27,7 +27,7 @@ namespace NaverMovieFinderApp.Model
             PubDate = pubDate;
             Director = director;
             Actor = actor;
-            UserRaing = userRaing;
+            UserRating = userRating;
         }
     }
 }

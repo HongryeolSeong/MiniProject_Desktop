@@ -22,7 +22,7 @@ namespace NaverMovieFinderApp.Model
         public string PubDate { get; set; }
         public string Director { get; set; }
         public string Actor { get; set; }
-        public string UserRaing { get; set; }
+        public string UserRating { get; set; }
         public Nullable<System.DateTime> RegDate { get; set; }
     }
 }

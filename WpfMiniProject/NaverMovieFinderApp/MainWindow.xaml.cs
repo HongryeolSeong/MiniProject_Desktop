@@ -164,7 +164,7 @@ namespace NaverMovieFinderApp
                     SubTitle = item.SubTitle,
                     PubDate = item.PubDate,
                     Actor = item.Actor,
-                    UserRaing= item.UserRaing,
+                    UserRating = item.UserRating,
                     RegDate = DateTime.Now
                 };
 
@@ -191,7 +191,7 @@ namespace NaverMovieFinderApp
 
         private void BtnViewWatchList_Click(object sender, RoutedEventArgs e)
         {
-            
+            ImgPoster.Source = new BitmapImage(new Uri("No_Picture.jpg", UriKind.RelativeOrAbsolute));
             this.DataContext = null;
             TxtMovieName.Text = "";
 
@@ -233,7 +233,7 @@ namespace NaverMovieFinderApp
                     item.PubDate,
                     item.Director,
                     item.Actor,
-                    item.UserRaing
+                    item.UserRating
                     ));
             }
 
@@ -272,7 +272,7 @@ namespace NaverMovieFinderApp
                     SubTitle = item.SubTitle,
                     PubDate = item.PubDate,
                     Actor = item.Actor,
-                    UserRaing = item.UserRating,
+                    UserRating = item.UserRating,
                     RegDate = DateTime.Now
                 };
 
