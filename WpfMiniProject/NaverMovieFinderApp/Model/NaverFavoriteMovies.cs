@@ -11,7 +11,7 @@ namespace NaverMovieFinderApp.Model
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class NaverFavoriteMovies
     {
         public int Idx { get; set; }

@@ -164,7 +164,7 @@ namespace NaverMovieFinderApp
                     SubTitle = item.SubTitle,
                     PubDate = item.PubDate,
                     Actor = item.Actor,
-                    UserRaing= item.UserRating,
+                    UserRaing= item.UserRaing,
                     RegDate = DateTime.Now
                 };
 
