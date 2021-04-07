@@ -39,14 +39,15 @@ namespace WpfSMSApp.View.Store
             NavigationService.GoBack(); //NavigationService.Navigate(new MyAccount());
         }
 
-        bool IsValid = true; // 지역변수 -> 전역변수
+        //private bool IsValid = false; // 지역변수 -> 전역변수(창고 추가 오류 발생)
 
-        public bool IsVaildInput()
+        public bool IsVaildName()
         {
+            bool IsValid = true;
             if (string.IsNullOrEmpty(TxtStoreName.Text))
             {
                 LblStoreName.Visibility = Visibility.Visible;
-                LblStoreName.Text = "창고명을 입력하세요.";
+                LblStoreName.Text = "창고명을 입력하세요";
                 IsValid = false;
             }
             else
@@ -55,21 +56,48 @@ namespace WpfSMSApp.View.Store
                 if (cnt > 0)
                 {
                     LblStoreName.Visibility = Visibility.Visible;
-                    LblStoreName.Text = "중복된 창고명이 존재합니다.";
+                    LblStoreName.Text = "중복된 창고명이 존재합니다";
                     IsValid = false;
-
                 }
+            }
+
+            if (IsValid)
+            {
+                LblStoreName.Visibility = Visibility.Hidden;
             }
 
             if (string.IsNullOrEmpty(TxtStoreLocation.Text))
             {
                 LblStoreLocation.Visibility = Visibility.Visible;
-                LblStoreLocation.Text = "창고위치를 입력하세요.";
+                LblStoreLocation.Text = "창고위치를 입력하세요";
                 IsValid = false;
+            }
+
+            if (IsValid)
+            {
+                LblStoreLocation.Visibility = Visibility.Hidden;
             }
 
             return IsValid;
         }
+        public bool IsVaildLocation()
+        {
+            bool IsValid = true;
+            if (string.IsNullOrEmpty(TxtStoreLocation.Text))
+            {
+                LblStoreLocation.Visibility = Visibility.Visible;
+                LblStoreLocation.Text = "창고위치를 입력하세요";
+                IsValid = false;
+            }
+
+            if (IsValid)
+            {
+                LblStoreLocation.Visibility = Visibility.Hidden;
+            }
+
+            return IsValid;
+        }
+
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
@@ -79,7 +107,8 @@ namespace WpfSMSApp.View.Store
 
             var store = new Model.Store();
 
-            isValid = IsVaildInput(); // 유효성 체크
+            isValid = IsVaildName(); // 유효성 체크
+            isValid = IsVaildLocation(); // 유효성 체크
 
             if (isValid)
             {
@@ -112,12 +141,12 @@ namespace WpfSMSApp.View.Store
 
         private void TxtStoreName_LostFocus(object sender, RoutedEventArgs e)
         {
-            IsVaildInput();
+            IsVaildName();
         }
 
         private void TxtStoreLocation_LostFocus(object sender, RoutedEventArgs e)
         {
-            IsVaildInput();
+            IsVaildLocation();
         }
     }
 }

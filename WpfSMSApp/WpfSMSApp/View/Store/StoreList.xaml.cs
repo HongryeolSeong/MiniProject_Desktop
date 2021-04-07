@@ -52,7 +52,7 @@ namespace WpfSMSApp.View.Store
                     stockStores.Add(store);
                 }
 
-                this.DataContext = stores;
+                this.DataContext = stockStores;
             }
             catch (Exception ex)
             {
@@ -132,21 +132,20 @@ namespace WpfSMSApp.View.Store
 
                     for (int i = 0; i < GrdData.Items.Count; i++)
                     {
-                        IRow row = sheet.CreateRow(i + 1);
+                        IRow row = sheet.CreateRow(i + 1); // 
                         if (GrdData.Items[i] is Model.StockStore)
                         {
-                            var store = GrdData.Items[i] as Model.Store;
                             var stockStore = GrdData.Items[i] as Model.StockStore;
                             ICell dataCell = row.CreateCell(0);
-                            dataCell.SetCellValue(store.StoreID);
+                            dataCell.SetCellValue(stockStore.StoreID);
                             dataCell = row.CreateCell(1);
-                            dataCell.SetCellValue(store.StoreName);
+                            dataCell.SetCellValue(stockStore.StoreName);
                             dataCell = row.CreateCell(2);
-                            dataCell.SetCellValue(store.StoreLocation);
+                            dataCell.SetCellValue(stockStore.StoreLocation);
                             dataCell = row.CreateCell(3);
                             dataCell.SetCellValue(stockStore.StockQuantity);
                         }
-                        
+
                     }
 
                     using (var fs = new FileStream(dialog.FileName, FileMode.OpenOrCreate, FileAccess.Write))

@@ -76,17 +76,6 @@ namespace WpfSMSApp.View.Store
                 LblStoreName.Text = "창고명을 입력하세요.";
                 IsValid = false;
             }
-            else
-            {
-                var cnt = Logic.DataAccess.GetStores().Where(u => u.StoreName.Equals(TxtStoreName.Text)).Count();
-                if (cnt > 0)
-                {
-                    LblStoreName.Visibility = Visibility.Visible;
-                    LblStoreName.Text = "중복된 창고명이 존재합니다.";
-                    IsValid = false;
-
-                }
-            }
 
             if (string.IsNullOrEmpty(TxtStoreLocation.Text))
             {
