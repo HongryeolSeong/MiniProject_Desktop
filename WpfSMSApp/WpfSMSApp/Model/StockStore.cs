@@ -8,6 +8,7 @@ namespace WpfSMSApp.Model
 {
     public class StockStore : Store
     {
-        public int StockQuntity { get; set; }
+        
+        public int StockQuantity { get; set; }
     }
 }
