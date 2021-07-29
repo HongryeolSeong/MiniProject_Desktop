@@ -175,11 +175,71 @@ using (var ctx = new OpenApiLabEntities())
 ### 4. 예고편 보기[.xaml.cs 👈 ](https://github.com/HongryeolSeong/MiniProject_Desktop/blob/main/WpfMiniProject/NaverMovieFinderApp/TrailerWindow.xaml.cs)
 ---
 ![트레일러](https://github.com/HongryeolSeong/MiniProject_Desktop/blob/main/NMFimg/trailer.gif)
-###### 
+###### 1. 예고편 버튼 클릭시 새로운 WPF창이 열리고 그와 동시에 _LoadDataCollection_ 이 실행되어 YouTube API를 통해 검색된 데이터는 _youtube_ 객체에 담겨 리스트인 _youtubes_ 에 차곡차곡 쌓이게됩니다.
+```C#
+private async Task LoadDataCollection()
+{
+    var youtubeService = new YouTubeService(
+        new BaseClientService.Initializer()
+        {
+            ApiKey = "AIzaSyCEj2ZDsfqi95enEjUzK0MD-dh1NN1DMo4",
+            ApplicationName = this.GetType().ToString()
+        }
+        ) ;
+
+    var request = youtubeService.Search.List("snippet");
+    request.Q = LblMovieName.Content.ToString(); // {movieName} 예고편
+    request.MaxResults = 10;                     // 사이즈가 너무 크면 프로그램 멈춤
+
+    var response = await request.ExecuteAsync(); // 검색 시작(Youtube OpenAPI 호출)
+
+    foreach (var item in response.Items)
+    {
+        if (item.Id.Kind.Equals("youtube#video"))
+        {
+            YoutubeItem youtube = new YoutubeItem()
+            {
+                Title = item.Snippet.Title,
+                Author = item.Snippet.ChannelTitle,
+                URL = $"http://www.youtube.com/watch?v={item.Id.VideoId}"
+            };
+
+            // 썸네일 이미지
+            youtube.Thumbnail = new BitmapImage(new Uri(item.Snippet.Thumbnails.Default__.Url, UriKind.RelativeOrAbsolute));
+            
+            youtubes.Add(youtube);
+        }
+    }
+}
+```
+###### 2. 1에서 완성된 리스트 _youtubes_ 는 리스트뷰의 콘텐츠로 출력됩니다.
+```C#
+private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+{
+    youtubes = new List<YoutubeItem>(); // 초기화 필수 : 바인딩시 에러 날 수 있음
+    ProcSearchYoutubeApi();
+}
+
+private async void ProcSearchYoutubeApi()
+{
+    await LoadDataCollection();
+    LsvYoutubeSearch.ItemsSource = youtubes;
+}
+```
+###### 3. 리스트뷰의 한 셀을 더블클릭할 시 Uri의 객체를 생성하여 웹브라우저 컨트롤에 해당 영화의 예고편 유튜브 링크를 출력합니다.
+```C#
+var video = LsvYoutubeSearch.SelectedItem as YoutubeItem;
+BrwYoutubeWatch.Source = new Uri(video.URL, UriKind.RelativeOrAbsolute);
+```
 <br/>
 <br/>
 <br/>
 
 ### 5. 네이버 영화 웹사이트 연결
 ---
+###### 네이버 영화 버튼 클릭시 선택된 셀의 영화에 대한 링크를 _Process_ 의 _Start_ 를 이용하여 웹브라우저를 새로 띄웁니다.
 ![웹사이트 열기](https://github.com/HongryeolSeong/MiniProject_Desktop/blob/main/NMFimg/link.gif)
+<br/>
+<br/>
+<br/>
+
