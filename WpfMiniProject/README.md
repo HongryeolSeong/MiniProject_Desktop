@@ -15,28 +15,6 @@
 ---
 ![검색](https://github.com/HongryeolSeong/MiniProject_Desktop/blob/main/NMFimg/search.gif)
 ###### 1. 텍스트박스에 검색할 영화를 입력받아 _ProcSearchNaverApi_ 메서드를 실행합니다.
-###### 2. 네이버 오픈 API에서 부여받은 Client ID, Client Secret, Open API URL을 인수로 _GetOpenApiResult_ 메서드를 사용하여 영화 검색 결과를 문자열로 받습니다.
-```C#
-GetOpenApiResult(string openApiUrl, string clientID, string clientSecret)
-{
-    WebRequest request = WebRequest.Create(openApiUrl);
-    request.Headers.Add("X-Naver-Client-Id", clientID);
-    request.Headers.Add("X-Naver-Client-Secret", clientSecret);
-
-    WebResponse response = request.GetResponse();
-    Stream stream = response.GetResponseStream();
-    StreamReader reader = new StreamReader(stream);
-
-    result = reader.ReadToEnd();
-
-    reader.Close();
-    stream.Close();
-    response.Close();
-    
-    return result;
-}
-```
-###### 3. 그 결과는 _StripHtmlTag_ 와 _StripPipe_ 메서드를 통해 가공되어 데이터 그리드에 출력됩니다.
 ```C#
 ProcSearchNaverApi(string movieName)
 {
@@ -74,6 +52,49 @@ ProcSearchNaverApi(string movieName)
     }
 
     this.DataContext = movieItems;
+}
+```
+###### 2. 네이버 오픈 API에서 부여받은 Client ID, Client Secret, Open API URL을 인수로 _GetOpenApiResult_ 메서드를 사용하여 영화 검색 결과를 문자열로 받습니다.
+```C#
+GetOpenApiResult(string openApiUrl, string clientID, string clientSecret)
+{
+    WebRequest request = WebRequest.Create(openApiUrl);
+    request.Headers.Add("X-Naver-Client-Id", clientID);
+    request.Headers.Add("X-Naver-Client-Secret", clientSecret);
+
+    WebResponse response = request.GetResponse();
+    Stream stream = response.GetResponseStream();
+    StreamReader reader = new StreamReader(stream);
+
+    result = reader.ReadToEnd();
+
+    reader.Close();
+    stream.Close();
+    response.Close();
+    
+    return result;
+}
+```
+###### 3. 그 결과는 _StripHtmlTag_ 와 _StripPipe_ 메서드를 통해 가공되어 데이터 그리드에 출력됩니다.
+```C#
+// HTML 태그 삭제
+public static string StripHtmlTag(string text)
+{
+    return Regex.Replace(text, @"<(.|\n)*?>", ""); // HTML 태그 삭제하는 정규표현식
+}
+
+// | 문자 삭제
+public static string StripPipe(string text)
+{
+    if (string.IsNullOrEmpty(text))
+    {
+        return "";
+    }
+    else
+    {
+        return text.Substring(0, text.LastIndexOf("|")).Replace("|", ", ");
+
+    }
 }
 ```
 <br/>
